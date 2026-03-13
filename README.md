@@ -1,36 +1,89 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# HU就活ナビ — フロントエンドプロトタイプ
 
-## Getting Started
+広島大学生専用のESシェアサービスのフロントエンドプロトタイプです。
 
-First, run the development server:
+> ⚠️ **これはフロントエンドプロトタイプです。** 認証・DB・APIは一切実装されていません。
+
+## セットアップ
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+http://localhost:3000 でアクセスできます。
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 画面一覧
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 公開画面
+| パス | 説明 |
+|------|------|
+| `/` | トップページ |
+| `/posts` | ES一覧（検索・フィルタ付き） |
+| `/posts/[id]` | ES詳細 |
+| `/submit/basic` | 投稿Step1: 基本情報 |
+| `/submit/questions` | 投稿Step2: 設問・回答 |
+| `/submit/evidence` | 投稿Step3: 証跡アップロード |
+| `/submit/masking` | 投稿Step4: マスキング確認 |
+| `/mypage/posts` | マイ投稿一覧 |
+| `/takedown` | 削除依頼フォーム |
+| `/terms` | 利用規約 |
+| `/guidelines` | 投稿ガイドライン |
 
-## Learn More
+### 管理者画面（モード切替で「管理者」を選択）
+| パス | 説明 |
+|------|------|
+| `/admin` | 管理ダッシュボード |
+| `/admin/posts` | 投稿審査一覧 |
+| `/admin/posts/[id]` | 投稿審査詳細 |
+| `/admin/reports` | 通報管理 |
+| `/admin/takedowns` | 削除依頼管理 |
+| `/admin/logs` | 監査ログ |
+| `/admin/companies` | 企業名正規化 |
 
-To learn more about Next.js, take a look at the following resources:
+## モード切替
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+画面右上の「閲覧 / 投稿者 / 管理者」トグルでUIモードを切り替えられます。
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **閲覧**: ES一覧・詳細の閲覧のみ
+- **投稿者**: ES投稿フロー、マイ投稿管理が使える
+- **管理者**: 管理者画面全体にアクセスできる
 
-## Deploy on Vercel
+モードはlocalStorageで保持されます。
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 技術スタック
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Next.js 15 (App Router)
+- TypeScript
+- Tailwind CSS
+- shadcn/ui
+- Zustand（状態管理）
+- React Hook Form + Zod（フォームバリデーション）
+- date-fns（日付フォーマット）
+- Lucide Icons
+
+## データ構造
+
+### モックデータ (`src/mocks/data/`)
+- `posts.ts` — 28件の投稿（公開12件、審査待ち6件、差し戻し4件、却下3件、下書き3件）
+- `companies.ts` — 14社（NTTデータ、リクルート、マツダなど、地場企業含む）
+- `reports.ts` — 6件の通報
+- `takedowns.ts` — 5件の削除依頼
+- `logs.ts` — 18件の監査ログ
+
+### localStorage で保持するもの
+| キー | 内容 |
+|------|------|
+| `viewer-mode` | 現在の表示モード |
+| `hu-es-store` | 投稿・通報・削除依頼・ログの状態変更 |
+| `hu-es-draft` | 投稿フローの下書きデータ |
+
+## バックエンド接続時の差し替えポイント
+
+詳細は `docs/frontend-prototype-notes.md` を参照してください。
+
+主な差し替えポイント：
+1. `src/stores/postStore.ts` のlocalStorage読み書き → API呼び出しに置き換え
+2. `src/stores/submitStore.ts` のdraft保持 → APIのdraftエンドポイントに置き換え
+3. `src/stores/viewerModeStore.ts` のモード切替 → 実際のJWT認証に置き換え
+4. `src/lib/masking/index.ts` → サーバーサイドのマスキングロジックと併用

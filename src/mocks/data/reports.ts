@@ -1,0 +1,58 @@
+import { Report } from '@/features/posts/types';
+
+export const mockReports: Report[] = [
+  {
+    id: 'r1',
+    postId: 'p5',
+    reason: 'personal_info',
+    detail: 'Q1の回答にGitHubのURLが残っています。[MASK]になっているようですが、前後の文脈からアカウント名が推測できる可能性があります。',
+    status: 'reviewed',
+    createdAt: '2025-03-15T10:00:00Z',
+    reviewedAt: '2025-03-16T09:00:00Z',
+    reviewNote: '確認しましたが、マスキング処理済みで問題なしと判断しました。',
+  },
+  {
+    id: 'r2',
+    postId: 'p2',
+    reason: 'false_content',
+    detail: 'この会社の選考でこの設問は出ないはずです。フォーマットも実際のESと異なります。虚偽の可能性があります。',
+    status: 'pending',
+    createdAt: '2025-05-25T14:00:00Z',
+  },
+  {
+    id: 'r3',
+    postId: 'p7',
+    reason: 'inappropriate',
+    detail: '回答の一部に企業の選考内容について批判的な記述があり、不適切だと感じました。',
+    status: 'dismissed',
+    createdAt: '2025-05-10T11:00:00Z',
+    reviewedAt: '2025-05-12T10:00:00Z',
+    reviewNote: '投稿者の経験としての記述であり、不適切とは判断しませんでした。',
+  },
+  {
+    id: 'r4',
+    postId: 'p1',
+    reason: 'rights_violation',
+    detail: '企業が使用する設問文はおそらく著作権があると思われます。そのままの転載は問題があるのではないでしょうか。',
+    status: 'pending',
+    createdAt: '2025-06-20T09:00:00Z',
+  },
+  {
+    id: 'r5',
+    postId: 'p11',
+    reason: 'personal_info',
+    detail: '投稿者のGitHub活動から個人が特定できてしまいます。コントリビューター認定という記述が特定につながる恐れがあります。',
+    status: 'pending',
+    createdAt: '2025-06-18T15:00:00Z',
+  },
+  {
+    id: 'r6',
+    postId: 'p3',
+    reason: 'false_content',
+    detail: '受験した年度と投稿内容の時期が合わないように思います。',
+    status: 'reviewed',
+    createdAt: '2025-07-10T11:00:00Z',
+    reviewedAt: '2025-07-11T09:00:00Z',
+    reviewNote: '証跡を確認し、内容の正確性を確認済みです。',
+  },
+];
