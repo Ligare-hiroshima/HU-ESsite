@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Post } from '@/features/posts/types';
 import { VerificationBadge } from '@/components/common/VerificationBadge';
-import { selectionTypeLabels, jobFamilyLabels, broadFieldLabels } from '@/lib/format';
+import { selectionTypeLabels, jobFamilyLabels, broadFieldLabels, huFacultyLabels } from '@/lib/format';
 import { formatDate } from '@/lib/utils';
 import { FileText, Eye, MessageSquare } from 'lucide-react';
 
@@ -21,6 +21,9 @@ export function PostCard({ post }: Props) {
             <span className="rounded bg-blue-50 px-2 py-0.5 text-xs text-blue-600">{selectionTypeLabels[post.selectionType]}</span>
             <span className="rounded bg-gray-100 px-2 py-0.5 text-xs text-gray-600">{post.graduationYear}卒</span>
             <span className="rounded bg-gray-100 px-2 py-0.5 text-xs text-gray-600">{broadFieldLabels[post.broadField]}</span>
+            {post.faculty && (
+              <span className="rounded bg-indigo-50 px-2 py-0.5 text-xs text-indigo-700">{huFacultyLabels[post.faculty]}</span>
+            )}
             {post.verificationStatus === 'verified' && <VerificationBadge status="verified" />}
           </div>
           <h3 className="font-semibold text-gray-900 group-hover:text-blue-700 line-clamp-2 text-sm sm:text-base">

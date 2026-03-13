@@ -9,7 +9,7 @@ import { PostCard } from '@/components/posts/PostCard';
 import { buttonVariants } from '@/components/ui/button';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { selectionTypeLabels, jobFamilyLabels, broadFieldLabels, academicLevelLabels } from '@/lib/format';
+import { selectionTypeLabels, jobFamilyLabels, broadFieldLabels, academicLevelLabels, huFacultyLabels } from '@/lib/format';
 import { formatDate } from '@/lib/utils';
 import { Flag, ChevronRight, FileText, AlertCircle } from 'lucide-react';
 
@@ -48,6 +48,9 @@ export default function PostDetailPage({ params }: { params: Promise<{ id: strin
               <span className="rounded bg-gray-100 px-2 py-0.5 text-xs text-gray-600">{post.graduationYear}卒</span>
               <span className="rounded bg-gray-100 px-2 py-0.5 text-xs text-gray-600">{academicLevelLabels[post.academicLevel]}</span>
               <span className="rounded bg-gray-100 px-2 py-0.5 text-xs text-gray-600">{broadFieldLabels[post.broadField]}</span>
+              {post.faculty && (
+                <span className="rounded bg-indigo-50 px-2 py-0.5 text-xs text-indigo-700">{huFacultyLabels[post.faculty]}</span>
+              )}
               <VerificationBadge status={post.verificationStatus} />
             </div>
             <h1 className="text-xl font-bold text-gray-900 sm:text-2xl">{post.companyName}</h1>

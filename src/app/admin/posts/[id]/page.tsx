@@ -12,7 +12,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { formatDate, formatDateTime, generateId } from '@/lib/utils';
-import { selectionTypeLabels, jobFamilyLabels, broadFieldLabels, academicLevelLabels } from '@/lib/format';
+import { selectionTypeLabels, jobFamilyLabels, broadFieldLabels, academicLevelLabels, huFacultyLabels } from '@/lib/format';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { ChevronLeft, FileText, AlertTriangle, Paperclip, CheckCircle2, XCircle, RotateCcw, EyeOff } from 'lucide-react';
@@ -109,6 +109,7 @@ export default function AdminPostDetailPage({ params }: { params: Promise<{ id: 
               <div><span className="text-gray-500">卒年</span><p>{post.graduationYear}卒</p></div>
               <div><span className="text-gray-500">文理</span><p>{broadFieldLabels[post.broadField]}</p></div>
               <div><span className="text-gray-500">学年</span><p>{academicLevelLabels[post.academicLevel]}</p></div>
+              <div><span className="text-gray-500">学部・研究科</span><p>{post.faculty ? huFacultyLabels[post.faculty] : '未設定'}</p></div>
               <div><span className="text-gray-500">投稿日</span><p>{formatDate(post.createdAt)}</p></div>
             </div>
             {post.posterMemo && (

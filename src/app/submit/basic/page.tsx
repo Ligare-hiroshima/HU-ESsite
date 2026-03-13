@@ -9,8 +9,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { industries, selectionTypeLabels, jobFamilyLabels, broadFieldLabels, academicLevelLabels } from '@/lib/format';
-import { SelectionType, JobFamily, AcademicLevel, BroadField } from '@/features/posts/types';
+import { industries, selectionTypeLabels, jobFamilyLabels, broadFieldLabels, academicLevelLabels, huFacultyLabels, huFacultiesUndergrad, huFacultiesGrad } from '@/lib/format';
+import { SelectionType, JobFamily, AcademicLevel, BroadField, HUFaculty } from '@/features/posts/types';
 import { generateId } from '@/lib/utils';
 
 const schema = z.object({
@@ -21,6 +21,7 @@ const schema = z.object({
   graduationYear: z.coerce.number().min(2020).max(2030),
   academicLevel: z.string().min(1, '学年を選択してください'),
   broadField: z.enum(['science', 'humanities', 'medical', 'education', 'other'] as const),
+  faculty: z.string().optional(),
   title: z.string().min(1, 'タイトルを入力してください'),
   posterMemo: z.string().optional(),
 });
@@ -42,6 +43,7 @@ export default function SubmitBasicPage() {
       graduationYear: draft.graduationYear ?? 2026,
       academicLevel: draft.academicLevel ?? 'B4',
       broadField: draft.broadField ?? 'science',
+      faculty: draft.faculty ?? '',
       title: draft.title ?? '',
       posterMemo: draft.posterMemo ?? '',
     },
@@ -54,6 +56,7 @@ export default function SubmitBasicPage() {
       ...data,
       jobFamily: data.jobFamily as JobFamily,
       academicLevel: data.academicLevel as AcademicLevel,
+      faculty: data.faculty ? data.faculty as HUFaculty : undefined,
       id: draft.id ?? generateId(),
       currentStep: 1,
     });
@@ -109,6 +112,19 @@ export default function SubmitBasicPage() {
             <select {...register('broadField')} className={selectClass}>
               {(Object.entries(broadFieldLabels) as [BroadField, string][]).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
             </select>
+          </div>
+          <div className="sm:col-span-2">
+            <Label className="mb-1 block text-sm font-medium">学部・研究科（任意）</Label>
+            <select {...register('faculty')} className={selectClass}>
+              <option value="">選択しない</option>
+              <optgroup label="── 学部 ──">
+                {huFacultiesUndergrad.map(f => <option key={f} value={f}>{huFacultyLabels[f]}</option>)}
+              </optgroup>
+              <optgroup label="── 研究科 ──">
+                {huFacultiesGrad.map(f => <option key={f} value={f}>{huFacultyLabels[f]}</option>)}
+              </optgroup>
+            </select>
+            <p className="mt-1 text-xs text-gray-500">投稿カードに表示されます。入力しなくても投稿できます。</p>
           </div>
         </div>
         <div>

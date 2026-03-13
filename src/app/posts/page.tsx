@@ -7,8 +7,8 @@ import { EmptyState } from '@/components/common/EmptyState';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Search, X, SlidersHorizontal, FileSearch } from 'lucide-react';
-import { SelectionType, JobFamily, BroadField } from '@/features/posts/types';
-import { selectionTypeLabels, jobFamilyLabels, broadFieldLabels, industries } from '@/lib/format';
+import { SelectionType, JobFamily, BroadField, HUFaculty } from '@/features/posts/types';
+import { selectionTypeLabels, jobFamilyLabels, broadFieldLabels, industries, huFacultyLabels, huFacultiesUndergrad, huFacultiesGrad } from '@/lib/format';
 
 type SortOrder = 'newest' | 'popular';
 
@@ -22,6 +22,7 @@ export default function PostsPage() {
   const [filterJob, setFilterJob] = useState<JobFamily | ''>('');
   const [filterYear, setFilterYear] = useState('');
   const [filterField, setFilterField] = useState<BroadField | ''>('');
+  const [filterFaculty, setFilterFaculty] = useState<HUFaculty | ''>('');
   const [sortOrder, setSortOrder] = useState<SortOrder>('newest');
   const [showFilters, setShowFilters] = useState(false);
 
@@ -44,6 +45,7 @@ export default function PostsPage() {
     if (filterJob) result = result.filter(p => p.jobFamily === filterJob);
     if (filterYear) result = result.filter(p => p.graduationYear === parseInt(filterYear));
     if (filterField) result = result.filter(p => p.broadField === filterField);
+    if (filterFaculty) result = result.filter(p => p.faculty === filterFaculty);
 
     if (sortOrder === 'newest') {
       result = [...result].sort((a, b) => new Date(b.publishedAt || b.createdAt).getTime() - new Date(a.publishedAt || a.createdAt).getTime());
@@ -54,7 +56,7 @@ export default function PostsPage() {
     return result;
   }, [approvedPosts, query, filterIndustry, filterSelection, filterJob, filterYear, filterField, sortOrder]);
 
-  const hasFilters = !!(query || filterIndustry || filterSelection || filterJob || filterYear || filterField);
+  const hasFilters = !!(query || filterIndustry || filterSelection || filterJob || filterYear || filterField || filterFaculty);
 
   const clearFilters = () => {
     setQuery('');
@@ -63,6 +65,7 @@ export default function PostsPage() {
     setFilterJob('');
     setFilterYear('');
     setFilterField('');
+    setFilterFaculty('');
   };
 
   return (
@@ -130,6 +133,18 @@ export default function PostsPage() {
                 <select value={filterField} onChange={e => setFilterField(e.target.value as BroadField | '')} className="w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
                   <option value="">すべて</option>
                   {(Object.entries(broadFieldLabels) as [BroadField, string][]).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
+                </select>
+              </div>
+              <div>
+                <label className="mb-1 block text-xs font-medium text-gray-600">学部・研究科</label>
+                <select value={filterFaculty} onChange={e => setFilterFaculty(e.target.value as HUFaculty | '')} className="w-full rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  <option value="">すべて</option>
+                  <optgroup label="── 学部 ──">
+                    {huFacultiesUndergrad.map(f => <option key={f} value={f}>{huFacultyLabels[f]}</option>)}
+                  </optgroup>
+                  <optgroup label="── 研究科 ──">
+                    {huFacultiesGrad.map(f => <option key={f} value={f}>{huFacultyLabels[f]}</option>)}
+                  </optgroup>
                 </select>
               </div>
             </div>

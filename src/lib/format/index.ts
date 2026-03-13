@@ -86,6 +86,38 @@ export const industries = [
   'サービス・HR', 'その他',
 ];
 
+export const huFacultyLabels: Record<HUFaculty, string> = {
+  // 学部
+  integrated_arts: '総合科学部',
+  letters: '文学部',
+  education: '教育学部',
+  law: '法学部',
+  economics: '経済学部',
+  science: '理学部',
+  medicine: '医学部',
+  dentistry: '歯学部',
+  pharmacy: '薬学部',
+  engineering: '工学部',
+  applied_bio: '生物生産学部',
+  informatics: '情報科学部',
+  // 研究科
+  grad_humanities: '人間社会科学研究科',
+  grad_adv_science: '先進理工系科学研究科',
+  grad_medical: '医系科学研究科',
+  grad_smart_society: 'スマート社会実装科学研究科',
+  other: 'その他',
+};
+
+export const huFacultiesUndergrad: HUFaculty[] = [
+  'integrated_arts', 'letters', 'education', 'law', 'economics',
+  'science', 'medicine', 'dentistry', 'pharmacy', 'engineering',
+  'applied_bio', 'informatics',
+];
+
+export const huFacultiesGrad: HUFaculty[] = [
+  'grad_humanities', 'grad_adv_science', 'grad_medical', 'grad_smart_society',
+];
+
 export function fileSizeLabel(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;

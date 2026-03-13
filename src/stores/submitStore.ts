@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { SelectionType, JobFamily, AcademicLevel, BroadField, PostQuestionItem, EvidenceFile } from '@/features/posts/types';
+import { SelectionType, JobFamily, AcademicLevel, BroadField, HUFaculty, PostQuestionItem, EvidenceFile } from '@/features/posts/types';
 
 export interface DraftPost {
   id?: string;
@@ -12,6 +12,7 @@ export interface DraftPost {
   graduationYear?: number;
   academicLevel?: AcademicLevel;
   broadField?: BroadField;
+  faculty?: HUFaculty;
   posterMemo?: string;
   questions: PostQuestionItem[];
   evidenceFiles: EvidenceFile[];
